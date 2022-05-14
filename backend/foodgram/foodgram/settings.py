@@ -119,3 +119,20 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 AUTH_USER_MODEL = 'users.User'
+
+
+SUBSCRIPTION_ERROR = 'Вы уже подписаны на этого пользователя.'
+UNSUBSCRIPTION_ERROR = 'Вы не были подписаны на этого пользователя.'
+SELF_SUBSCRIPTION_ERROR = 'Нельзя подписаться на самого себя.'
+NO_RECIPE = 'Такого рецепта нет в списке.'
+RECIPE_ALREADY_IN = 'Рецепт уже добавлен в список.'
+INGREDIENT_FIELD_ERROR = 'Поле ingredients обязательно.'
+INGREDIENT_VALIDATION_ERROR = 'Такого ингредиента нет в БД.'
+UNIQUE_INGREDIENT_VALIDATION_ERROR = 'Нельзя добавлять одинаковые ингридиенты.'
+INGREDIENT_AMOUNT_FIELD_ERROR = 'Укажите количество ингредиентов.'
+INGREDIENT_AMOUNT_VALIDATION_ERROR = 'Количество ингридиентов не может быть меньше 1.'
+FOODGRAM = '\n________\nFoodgram'
+SHOPPING_CART = (
+    'Привет, {username}!\nВот твой список покупок:\n'
+    '________________________\n\n'
+)

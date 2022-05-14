@@ -3,6 +3,9 @@ from django.contrib.auth.models import AbstractUser
 
 
 class User(AbstractUser):
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['username']
+
     password = models.CharField(
         max_length=150,
         verbose_name='Пароль'
@@ -20,9 +23,6 @@ class User(AbstractUser):
         max_length=150,
         verbose_name='Фамилия'
     )
-
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
 
     class Meta:
         ordering = ('username',)

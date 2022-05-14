@@ -23,13 +23,15 @@ class UserDetailSerializer(UserSerializer):
         )
 
     def get_is_subscribed(self, obj):
-        try:
+        if (
+            self.context.get('request') is not None
+            and self.context.get('request').user.is_authenticated
+        ):
             return Subscription.objects.filter(
                 user=self.context.get('request').user,
                 author=obj
             ).exists()
-        except (AttributeError, TypeError):
-            return False
+        return False
 
 
 class SetPasswordSerializer(serializers.ModelSerializer):
@@ -57,10 +59,7 @@ class SubscriptionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Subscription
-        fields = (
-            'email', 'id', 'username', 'first_name', 'last_name',
-            'is_subscribed', 'recipes', 'recipes_count'
-        )
+        fields = '__all__'
         validators = [
             serializers.UniqueTogetherValidator(
                 queryset=Subscription.objects.all(),
@@ -76,12 +75,13 @@ class SubscriptionSerializer(serializers.ModelSerializer):
 
     def get_recipes(self, obj):
         from api.serializers import RecipeShortSerializer
-        try:
+        if self.context:
             recipes_limit = self.context['request'].GET.get('recipes_limit')
-            queryset = Recipe.objects.filter(
-                author=obj.author
-            )[:int(recipes_limit)]
-        except (TypeError, KeyError):
+            if recipes_limit:
+                queryset = Recipe.objects.filter(
+                    author=obj.author
+                )[:int(recipes_limit)]
+        else:
             queryset = Recipe.objects.filter(author=obj.author)
         return RecipeShortSerializer(queryset, many=True).data
 

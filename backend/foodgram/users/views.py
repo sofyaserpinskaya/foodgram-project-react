@@ -1,4 +1,3 @@
-from django.db.utils import IntegrityError
 from django.shortcuts import get_object_or_404
 
 from rest_framework import mixins, status, viewsets
@@ -9,17 +8,15 @@ from rest_framework.response import Response
 from djoser import views, utils
 from djoser.conf import settings
 
+from .models import User, Subscription
 from .serializers import (
     UserSerializer, UserDetailSerializer,
     SetPasswordSerializer, SubscriptionSerializer
 )
-from .models import User, Subscription
 from api.pagination import PageLimitPagination
-
-
-SUBSCRIPTION_ERROR = 'Вы уже подписаны на этого пользователя.'
-UNSUBSCRIPTION_ERROR = 'Вы не были подписаны на этого пользователя.'
-SELF_SUBSCRIPTION_ERROR = 'Нельзя подписаться на самого себя.'
+from foodgram.settings import (
+    SUBSCRIPTION_ERROR, UNSUBSCRIPTION_ERROR, SELF_SUBSCRIPTION_ERROR
+)
 
 
 class TokenCreateView(views.TokenCreateView):
@@ -95,20 +92,19 @@ class UserViewSet(
                     {'errors': SELF_SUBSCRIPTION_ERROR},
                     status=status.HTTP_400_BAD_REQUEST
                 )
-            try:
-                subscription = Subscription.objects.create(
-                    user=request.user, author=author
-                )
-                serializer = SubscriptionSerializer(subscription)
-                return Response(
-                    serializer.data,
-                    status=status.HTTP_201_CREATED
-                )
-            except IntegrityError:
+            subscription, created = Subscription.objects.get_or_create(
+                user=request.user, author=author
+            )
+            if not created:
                 return Response(
                     {'errors': SUBSCRIPTION_ERROR},
                     status=status.HTTP_400_BAD_REQUEST
                 )
+            serializer = SubscriptionSerializer(subscription)
+            return Response(
+                serializer.data,
+                status=status.HTTP_201_CREATED
+            )
         subscription = Subscription.objects.filter(
                 user=request.user, author=author
             )

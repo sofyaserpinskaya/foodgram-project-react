@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from drf_extra_fields.fields import Base64ImageField
 
+from .utils import is_in_fav_or_shop_list
 from .validators import validate_ingredient_amounts
 from recipes.models import (
     Recipe, Ingredient, Tag, Favorite, IngredientAmount, ShoppingCart
@@ -69,20 +70,10 @@ class RecipeSerializer(serializers.ModelSerializer):
         )
 
     def get_is_favorited(self, obj):
-        try:
-            return Favorite.objects.filter(
-                user=self.context.get('request').user, recipe=obj
-            ).exists()
-        except TypeError:
-            return False
+        return is_in_fav_or_shop_list(self, obj, Favorite)
 
     def get_is_in_shopping_cart(self, obj):
-        try:
-            return ShoppingCart.objects.filter(
-                user=self.context.get('request').user, recipe=obj
-            ).exists()
-        except TypeError:
-            return False
+        return is_in_fav_or_shop_list(self, obj, ShoppingCart)
 
     def create(self, validated_data):
         ingredients = self.initial_data.get('ingredients')

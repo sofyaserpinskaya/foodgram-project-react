@@ -14,16 +14,10 @@ from .serializers import (
     TagSerializer, IngredientSerializer, RecipeSerializer
 )
 from .utils import create_delete_recipes_list
+from foodgram.settings import FOODGRAM, SHOPPING_CART
 from recipes.models import (
     Tag, Ingredient, Recipe, IngredientAmount, Favorite,
     ShoppingCart
-)
-
-
-FOODGRAM = '\n________\nFoodgram'
-SHOPPING_CART = (
-    'Привет, {username}!\nВот твой список покупок:\n'
-    '________________________\n\n'
 )
 
 

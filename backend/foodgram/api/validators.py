@@ -1,20 +1,25 @@
-from rest_framework import serializers
+from rest_framework.serializers import ValidationError
 
+from foodgram.settings import (
+    INGREDIENT_FIELD_ERROR, INGREDIENT_VALIDATION_ERROR,
+    UNIQUE_INGREDIENT_VALIDATION_ERROR, INGREDIENT_AMOUNT_FIELD_ERROR,
+    INGREDIENT_AMOUNT_VALIDATION_ERROR
+)
 from recipes.models import Ingredient
-
-
-INGREDIENT_FIELD_ERROR = 'Поле ingredients обязательно.'
-INGREDIENT_VALIDATION_ERROR = 'Такого ингредиента нет в БД.'
-INGREDIENT_AMOUNT_VALIDATION_ERROR = 'Укажите количество ингредиентов.'
 
 
 def validate_ingredient_amounts(ingredients):
     if not ingredients:
-        raise serializers.ValidationError(INGREDIENT_FIELD_ERROR)
+        raise ValidationError(INGREDIENT_FIELD_ERROR)
+    unique_ingridients_list = []
     for ingredient in ingredients:
-        if not Ingredient.objects.filter(id=ingredient.get('id')).exists():
-            raise serializers.ValidationError(INGREDIENT_VALIDATION_ERROR)
         if ingredient.get('amount') is None:
-            raise serializers.ValidationError(
-                INGREDIENT_AMOUNT_VALIDATION_ERROR
-            )
+            raise ValidationError(INGREDIENT_AMOUNT_FIELD_ERROR)
+        if ingredient.get('amount') < 1:
+            raise ValidationError(INGREDIENT_AMOUNT_VALIDATION_ERROR)
+        ingredient_id = ingredient.get('id')
+        if ingredient_id in unique_ingridients_list:
+            raise ValidationError(UNIQUE_INGREDIENT_VALIDATION_ERROR)
+        unique_ingridients_list.append(ingredient_id)
+        if not Ingredient.objects.filter(id=ingredient_id).exists():
+            raise ValidationError(INGREDIENT_VALIDATION_ERROR)

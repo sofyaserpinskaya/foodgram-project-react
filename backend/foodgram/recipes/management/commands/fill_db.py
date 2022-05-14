@@ -1,5 +1,7 @@
 import csv
+import os
 
+from django.conf import settings
 from django.core.management.base import BaseCommand
 
 from recipes.models import Ingredient
@@ -19,7 +21,7 @@ action = {
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        path = '/Users/sofyaserpinskaya/Dev/foodgram-project-react/data/'
+        path = os.path.join(settings.BASE_DIR, "data/")
         for key in action.keys():
             with open(path + key, 'r', encoding='utf-8') as f:
                 reader = csv.reader(f)
