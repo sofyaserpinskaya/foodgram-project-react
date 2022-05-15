@@ -18,7 +18,7 @@ def create_delete_recipes_list(request, pk, model):
             serializer = RecipeShortSerializer(recipe)
             return Response(
                 serializer.data, status=status.HTTP_201_CREATED
-                )
+            )
         return Response(
             {'errors': RECIPE_ALREADY_IN},
             status=status.HTTP_400_BAD_REQUEST

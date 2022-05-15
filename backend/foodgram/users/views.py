@@ -1,21 +1,20 @@
 from django.shortcuts import get_object_or_404
 
+from djoser import utils, views
+from djoser.conf import settings
 from rest_framework import mixins, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 
-from djoser import views, utils
-from djoser.conf import settings
-
-from .models import User, Subscription
-from .serializers import (
-    UserSerializer, UserDetailSerializer,
-    SetPasswordSerializer, SubscriptionSerializer
-)
 from api.pagination import PageLimitPagination
 from foodgram.settings import (
-    SUBSCRIPTION_ERROR, UNSUBSCRIPTION_ERROR, SELF_SUBSCRIPTION_ERROR
+    SELF_SUBSCRIPTION_ERROR, SUBSCRIPTION_ERROR, UNSUBSCRIPTION_ERROR
+)
+from .models import Subscription, User
+from .serializers import (
+    SetPasswordSerializer, SubscriptionSerializer, UserDetailSerializer,
+    UserSerializer
 )
 
 
@@ -106,8 +105,8 @@ class UserViewSet(
                 status=status.HTTP_201_CREATED
             )
         subscription = Subscription.objects.filter(
-                user=request.user, author=author
-            )
+            user=request.user, author=author
+        )
         if subscription:
             subscription.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)

@@ -1,13 +1,12 @@
+from drf_extra_fields.fields import Base64ImageField
 from rest_framework import serializers
 
-from drf_extra_fields.fields import Base64ImageField
-
-from .utils import is_in_fav_or_shop_list
-from .validators import validate_ingredient_amounts
 from recipes.models import (
-    Recipe, Ingredient, Tag, Favorite, IngredientAmount, ShoppingCart
+    Favorite, Ingredient, IngredientAmount, Recipe, ShoppingCart, Tag
 )
 from users.serializers import UserDetailSerializer
+from .utils import is_in_fav_or_shop_list
+from .validators import validate_ingredient_amounts
 
 
 class TagSerializer(serializers.ModelSerializer):

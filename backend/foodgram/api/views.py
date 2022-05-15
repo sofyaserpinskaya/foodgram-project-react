@@ -1,24 +1,20 @@
 from django.http import HttpResponse
 
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, mixins, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import MethodNotAllowed
 from rest_framework.permissions import IsAuthenticated
 
-from django_filters.rest_framework import DjangoFilterBackend
-
+from foodgram.settings import FOODGRAM, SHOPPING_CART
+from recipes.models import (
+    Favorite, Ingredient, IngredientAmount, Recipe, ShoppingCart, Tag
+)
 from .filters import RecipeFilter
 from .pagination import PageLimitPagination
 from .permissions import IsAuthenticatedAuthorOrReadOnly
-from .serializers import (
-    TagSerializer, IngredientSerializer, RecipeSerializer
-)
+from .serializers import IngredientSerializer, RecipeSerializer, TagSerializer
 from .utils import create_delete_recipes_list
-from foodgram.settings import FOODGRAM, SHOPPING_CART
-from recipes.models import (
-    Tag, Ingredient, Recipe, IngredientAmount, Favorite,
-    ShoppingCart
-)
 
 
 class TagViewSet(
