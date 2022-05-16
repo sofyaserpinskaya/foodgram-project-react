@@ -15,7 +15,7 @@ def validate_ingredient_amounts(ingredients):
     for ingredient in ingredients:
         if ingredient.get('amount') is None:
             raise ValidationError(INGREDIENT_AMOUNT_FIELD_ERROR)
-        if ingredient.get('amount') < 1:
+        if int(ingredient.get('amount')) < 1:
             raise ValidationError(INGREDIENT_AMOUNT_VALIDATION_ERROR)
         ingredient_id = ingredient.get('id')
         if ingredient_id in unique_ingridients_list:
