@@ -42,7 +42,7 @@ class RecipeFilter(FilterSet):
 
     def filter_author(self, queryset, name, value):
         if value == 'me':
-            value = self.request.user.username
+            return queryset.filter(author=self.request.user.id)
         return queryset.filter(author=value)
 
 
