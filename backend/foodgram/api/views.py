@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters, mixins, viewsets
+from rest_framework import mixins, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import MethodNotAllowed
 from rest_framework.permissions import IsAuthenticated
@@ -10,7 +10,7 @@ from foodgram.settings import FOODGRAM, SHOPPING_CART
 from recipes.models import (
     Favorite, Ingredient, IngredientAmount, Recipe, ShoppingCart, Tag
 )
-from .filters import RecipeFilter
+from .filters import IngredientFilter, RecipeFilter
 from .pagination import PageLimitPagination
 from .permissions import IsAuthenticatedAuthorOrReadOnly
 from .serializers import IngredientSerializer, RecipeSerializer, TagSerializer
@@ -31,7 +31,7 @@ class IngredientViewSet(
 ):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
-    filter_backends = (filters.SearchFilter,)
+    filter_backends = (IngredientFilter,)
     search_fields = ('^name',)
 
 

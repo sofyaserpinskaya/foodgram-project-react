@@ -1,6 +1,7 @@
 from django_filters.rest_framework import (
     BooleanFilter, FilterSet, ModelMultipleChoiceFilter
 )
+from rest_framework.filters import SearchFilter
 
 from recipes.models import Recipe, Tag
 
@@ -33,3 +34,7 @@ class RecipeFilter(FilterSet):
         if value == int(True) and user.is_authenticated:
             return queryset.filter(shopping_cart__user=user)
         return queryset
+
+
+class IngredientFilter(SearchFilter):
+    search_param = 'name'
