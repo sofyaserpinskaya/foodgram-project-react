@@ -29,7 +29,7 @@ POSTGRES_PASSWORD=password
 DB_HOST=db
 DB_PORT=5432
 SECRET_KEY=secretkey
-``
+```
 
 ### Развернутый проект
 
@@ -41,5 +41,7 @@ SECRET_KEY=secretkey
 
 ### Администратор
 
+```
 email: admin@yandex.ru
 password: admin
+```
