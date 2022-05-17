@@ -1,10 +1,9 @@
 from django_filters.rest_framework import (
-    BooleanFilter, FilterSet, ModelChoiceFilter, ModelMultipleChoiceFilter
+    BooleanFilter, ChoiceFilter, FilterSet, ModelMultipleChoiceFilter
 )
 from rest_framework.filters import SearchFilter
 
 from recipes.models import Recipe, Tag
-from users.models import User
 
 
 class RecipeFilter(FilterSet):
@@ -19,9 +18,8 @@ class RecipeFilter(FilterSet):
         to_field_name='slug',
         queryset=Tag.objects.all()
     )
-    author = ModelChoiceFilter(
-        method='filter_author',
-        queryset=User.objects.all()
+    author = ChoiceFilter(
+        method='filter_author'
     )
 
     class Meta:
@@ -42,7 +40,7 @@ class RecipeFilter(FilterSet):
 
     def filter_author(self, queryset, name, value):
         if value == 'me':
-            return queryset.filter(author=self.request.user.id)
+            return queryset.filter(author=self.request.user)
         return queryset.filter(author=value)
 
 
