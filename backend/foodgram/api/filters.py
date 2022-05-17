@@ -4,6 +4,7 @@ from django_filters.rest_framework import (
 from rest_framework.filters import SearchFilter
 
 from recipes.models import Recipe, Tag
+from users.models import User
 
 
 class RecipeFilter(FilterSet):
@@ -19,7 +20,8 @@ class RecipeFilter(FilterSet):
         queryset=Tag.objects.all()
     )
     author = ModelChoiceFilter(
-        method='filter_author'
+        method='filter_author',
+        queryset=User.objects.all()
     )
 
     class Meta:
