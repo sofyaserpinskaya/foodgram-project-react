@@ -1,5 +1,5 @@
 from django_filters.rest_framework import (
-    BooleanFilter, FilterSet, ModelMultipleChoiceFilter
+    BooleanFilter, FilterSet, ModelChoiceFilter, ModelMultipleChoiceFilter
 )
 from rest_framework.filters import SearchFilter
 
@@ -18,6 +18,9 @@ class RecipeFilter(FilterSet):
         to_field_name='slug',
         queryset=Tag.objects.all()
     )
+    author = ModelChoiceFilter(
+        method='filter_author'
+    )
 
     class Meta:
         model = Recipe
@@ -34,6 +37,11 @@ class RecipeFilter(FilterSet):
         if value == int(True) and user.is_authenticated:
             return queryset.filter(shopping_cart__user=user)
         return queryset
+
+    def filter_author(self, queryset, name, value):
+        if value == 'me':
+            value = self.request.user
+        return queryset.filter(author=value)
 
 
 class IngredientFilter(SearchFilter):
