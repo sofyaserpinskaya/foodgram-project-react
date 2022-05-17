@@ -1,5 +1,5 @@
 from django_filters.rest_framework import (
-    BooleanFilter, ChoiceFilter, FilterSet, ModelMultipleChoiceFilter
+    BooleanFilter, CharFilter, FilterSet, ModelMultipleChoiceFilter
 )
 from rest_framework.filters import SearchFilter
 
@@ -18,7 +18,7 @@ class RecipeFilter(FilterSet):
         to_field_name='slug',
         queryset=Tag.objects.all()
     )
-    author = ChoiceFilter(
+    author = CharFilter(
         method='filter_author'
     )
 
