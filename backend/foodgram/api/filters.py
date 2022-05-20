@@ -55,4 +55,4 @@ class IngredientFilter(FilterSet):
     def filter_name(self, queryset, name, value):
         starts_with = queryset.filter(name__startswith=value)
         contains = queryset.filter(name__contains=value)
-        return set(starts_with | contains)
+        return starts_with | contains.difference(starts_with)
