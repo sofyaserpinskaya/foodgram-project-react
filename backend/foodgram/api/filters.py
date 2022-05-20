@@ -1,5 +1,4 @@
-# from django.db.models import Q
-# from itertools import chain
+from django.db.models import BooleanField, ExpressionWrapper, Q
 
 from django_filters.rest_framework import (
     BooleanFilter, Filter, FilterSet, ModelMultipleChoiceFilter
@@ -55,7 +54,8 @@ class IngredientFilter(FilterSet):
     )
 
     def filter_name(self, queryset, name, value):
-        filtered = list(queryset.filter(name__contains=value))
-        return sorted(
-            filtered, key=lambda x: (not x.name.startswith('value'), x)
-        )
+        data = queryset.filter(name__contains=value)
+        expression = Q(name__startswith=value)
+        is_match = ExpressionWrapper(expression, output_field=BooleanField())
+        data = data.annotate(my_field=is_match)
+        return data.order_by('-my_field')
