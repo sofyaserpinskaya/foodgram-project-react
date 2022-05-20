@@ -41,7 +41,7 @@ SECRET_KEY=secretkey
 
 ### Администратор
 
-```
+```bash
 email: admin@yandex.ru
 password: admin
 ```
