@@ -1,4 +1,6 @@
 # from django.db.models import Q
+from itertools import chain
+
 from django_filters.rest_framework import (
     BooleanFilter, Filter, FilterSet, ModelMultipleChoiceFilter
 )
@@ -55,4 +57,4 @@ class IngredientFilter(FilterSet):
     def filter_name(self, queryset, name, value):
         starts_with = queryset.filter(name__startswith=value)
         contains = queryset.filter(name__contains=value)
-        return starts_with | contains.difference(starts_with)
+        return list(chain(starts_with, contains.difference(starts_with)))
