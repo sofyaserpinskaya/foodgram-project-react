@@ -1,7 +1,7 @@
+# from django.db.models import Q
 from django_filters.rest_framework import (
     BooleanFilter, Filter, FilterSet, ModelMultipleChoiceFilter
 )
-from rest_framework.filters import SearchFilter
 
 from recipes.models import Recipe, Tag
 
@@ -44,5 +44,15 @@ class RecipeFilter(FilterSet):
         return queryset.filter(author=value)
 
 
-class IngredientFilter(SearchFilter):
-    search_param = 'name'
+# class IngredientFilter(SearchFilter):
+#     search_param = 'name'
+
+class IngredientFilter(FilterSet):
+    name = Filter(
+        method='filter_name'
+    )
+
+    def filter_name(self, queryset, name, value):
+        starts_with = queryset.filter(name__startswith=value)
+        contains = queryset.filter(name__contains=value)
+        return set(starts_with | contains)
