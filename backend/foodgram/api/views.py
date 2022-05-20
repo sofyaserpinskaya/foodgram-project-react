@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 
 from django_filters.rest_framework import DjangoFilterBackend
+from reportlab.pdfgen import canvas
 from rest_framework import mixins, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import MethodNotAllowed
@@ -94,12 +95,22 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 f'- {shopping_dict[ingredient]["amount"]}\n'
             )
         download_cart += FOODGRAM
-        response = HttpResponse(
-            download_cart,
-            content_type='text/plain;charset=UTF-8',
-        )
+        response = HttpResponse(content_type='application/pdf')
         response['Content-Disposition'] = (
-            'attachment;'
-            'filename="shopping_cart.txt"'
+            'attachment; filename="shopping_cart.pdf"'
         )
+        p = canvas.Canvas(download_cart)
+        p.drawString(100, 100, "Hello world.")
+        p.showPage()
+        p.save()
         return response
+
+        # response = HttpResponse(
+        #     download_cart,
+        #     content_type='text/plain;charset=UTF-8',
+        # )
+        # response['Content-Disposition'] = (
+        #     'attachment;'
+        #     'filename="shopping_cart.txt"'
+        # )
+        # return response
