@@ -45,9 +45,6 @@ class RecipeFilter(FilterSet):
         return queryset.filter(author=value)
 
 
-# class IngredientFilter(SearchFilter):
-#     search_param = 'name'
-
 class IngredientFilter(FilterSet):
     name = Filter(
         method='filter_name'
@@ -55,7 +52,8 @@ class IngredientFilter(FilterSet):
 
     def filter_name(self, queryset, name, value):
         data = queryset.filter(name__contains=value)
-        expression = Q(name__startswith=value)
-        is_match = ExpressionWrapper(expression, output_field=BooleanField())
-        data = data.annotate(my_field=is_match)
-        return data.order_by('-my_field')
+        startswith = ExpressionWrapper(
+            Q(name__startswith=value),
+            output_field=BooleanField()
+        )
+        return data.annotate(startswith=startswith).order_by('-startswith')
