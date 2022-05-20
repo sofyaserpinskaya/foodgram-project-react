@@ -100,7 +100,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             'attachment; filename="shopping_cart.pdf"'
         )
         p = canvas.Canvas(response)
-        p.drawString(download_cart)
+        p.drawString(100, 100, text=download_cart)
         p.showPage()
         p.save()
         return response
