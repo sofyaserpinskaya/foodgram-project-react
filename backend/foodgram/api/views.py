@@ -99,8 +99,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
         response['Content-Disposition'] = (
             'attachment; filename="shopping_cart.pdf"'
         )
-        p = canvas.Canvas(download_cart)
-        p.drawString(100, 100, "Hello world.")
+        p = canvas.Canvas(response)
+        p.drawString(download_cart)
         p.showPage()
         p.save()
         return response
