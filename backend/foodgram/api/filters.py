@@ -57,5 +57,5 @@ class IngredientFilter(FilterSet):
     def filter_name(self, queryset, name, value):
         filtered_1 = queryset.filter(name__startswith=value)
         contains = queryset.filter(name__contains=value)
-        filtered_2 = filtered_1.difference(contains)
+        filtered_2 = contains.difference(filtered_1)
         return filtered_1 | filtered_2
