@@ -104,7 +104,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         )
         p = canvas.Canvas(response, pagesize=A4)
         pdfmetrics.registerFont(
-            TTFont('Montserrat', 'Montserrat-VariableFont_wght.ttf')
+            TTFont('Montserrat', './fonts/Montserrat-VariableFont_wght.ttf')
         )
         p.setFont('Montserrat', 32)
         p.drawString(10, 10, text=download_cart)
