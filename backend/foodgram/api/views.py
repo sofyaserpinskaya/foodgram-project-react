@@ -1,6 +1,9 @@
 from django.http import HttpResponse
 
 from django_filters.rest_framework import DjangoFilterBackend
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
 from rest_framework import mixins, viewsets
 from rest_framework.decorators import action
@@ -99,8 +102,12 @@ class RecipeViewSet(viewsets.ModelViewSet):
         response['Content-Disposition'] = (
             'attachment; filename="shopping_cart.pdf"'
         )
-        p = canvas.Canvas(response)
-        p.drawString(100, 100, text=download_cart)
+        p = canvas.Canvas(response, pagesize=A4)
+        pdfmetrics.registerFont(
+            TTFont('Montserrat', 'Montserrat-VariableFont_wght.ttf')
+        )
+        p.setFont('Montserrat', 32)
+        p.drawString(10, 10, text=download_cart)
         p.showPage()
         p.save()
         return response
