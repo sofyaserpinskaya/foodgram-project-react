@@ -90,14 +90,14 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 }
             else:
                 shopping_dict[ingredient]['amount'] += obj.amount
-        download_cart = SHOPPING_CART.format(username=request.user.username)
-        for ingredient in shopping_dict:
-            download_cart += (
-                f'{ingredient} '
-                f'({shopping_dict[ingredient]["measurement_unit"]}) '
-                f'- {shopping_dict[ingredient]["amount"]}\n'
-            )
-        download_cart += FOODGRAM
+        # download_cart = SHOPPING_CART.format(username=request.user.username)
+        # for ingredient in shopping_dict:
+        #     download_cart += (
+        #         f'{ingredient} '
+        #         f'({shopping_dict[ingredient]["measurement_unit"]}) '
+        #         f'- {shopping_dict[ingredient]["amount"]}\n'
+        #     )
+        # download_cart += FOODGRAM
         response = HttpResponse(content_type='application/pdf')
         response['Content-Disposition'] = (
             'attachment; filename="shopping_cart.pdf"'
@@ -107,7 +107,16 @@ class RecipeViewSet(viewsets.ModelViewSet):
             TTFont('Montserrat', './fonts/Montserrat-VariableFont_wght.ttf')
         )
         p.setFont('Montserrat', 32)
-        p.drawString(10, 10, text=download_cart)
+        p.drawString(10, 150, text=SHOPPING_CART.format(
+            username=request.user.username
+        ))
+        for ingredient in shopping_dict:
+            p.drawString(10, 100, text=(
+                f'{ingredient} '
+                f'({shopping_dict[ingredient]["measurement_unit"]}) '
+                f'- {shopping_dict[ingredient]["amount"]}'
+            ))
+        p.drawString(10, 10, text=FOODGRAM)
         p.showPage()
         p.save()
         return response
