@@ -13,7 +13,7 @@ Frontend - Яндекс.Практикум
 
 ### Технологии
 
-Python, Django, PostgreSQL, gunicorn, nginx, Docker.
+Python, Django, PostgreSQL, gunicorn, nginx, Docker
 
 ### Шаблон наполнения env-файла
 
