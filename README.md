@@ -9,6 +9,7 @@
 ### Автор
 
 Backend - Софья Серпинская: <https://github.com/sofyaserpinskaya>
+
 Frontend - Яндекс.Практикум
 
 ### Технологии
