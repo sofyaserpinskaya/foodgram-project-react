@@ -8,9 +8,9 @@
 
 ### Автор
 
-Backend - Софья Серпинская: <https://github.com/sofyaserpinskaya>
+Backend - [Софья Серпинская](https://github.com/sofyaserpinskaya)
 
-Frontend - Яндекс.Практикум
+Frontend - [Яндекс.Практикум](https://github.com/yandex-praktikum)
 
 ### Технологии
 
