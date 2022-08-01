@@ -1,23 +1,19 @@
-# FOODGRAM
+# FOODGRAM - Продуктовый помощник
 
 ![foodgram_workflow](https://github.com/sofyaserpinskaya/foodgram-project-react/workflows/foodgram_workflow/badge.svg)
 
 ## Описание
 
-На этом сервисе пользователи могут публиковать рецепты, подписываться на публикации других пользователей, добавлять понравившиеся рецепты в список «Избранное», а перед походом в магазин скачивать сводный список продуктов, необходимых для приготовления одного или нескольких выбранных блюд.
+На этом сервисе пользователи могут публиковать рецепты, подписываться на публикации других авторов, добавлять понравившиеся рецепты в список «Избранное», а перед походом в магазин скачивать сводный список продуктов, необходимых для приготовления одного или нескольких выбранных блюд.
 
 ### Автор
 
-Софья Серпинская: <https://github.com/sofyaserpinskaya>
+Backend - Софья Серпинская: <https://github.com/sofyaserpinskaya>
+Frontend - Яндекс.Практикум
 
 ### Технологии
 
-```bash
-Django==2.2.19
-django-filter==21.1
-djangorestframework==3.13.1
-djoser==2.1.0
-```
+Python, Django, PostgreSQL, gunicorn, nginx, Docker.
 
 ### Шаблон наполнения env-файла
 
@@ -31,17 +27,30 @@ DB_PORT=5432
 SECRET_KEY=secretkey
 ```
 
-### Развернутый проект
+### Запуск проекта на сервере
 
-<http://51.250.109.110/recipes>
+Запуск контейнеров
 
-### Админ-зона
+```
+sudo docker-compose up -d
+```
 
-<http://51.250.109.110/admin>
+Миграции
 
-### Администратор
+```
+sudo docker-compose exec backend python manage.py migrate
+```
 
-```bash
-email: admin@yandex.ru
-password: admin
+Создание суперпользователя
+
+```
+sudo docker-compose exec backend python manage.py createsuperuser
+```
+
+Статика и загрузка данных в БД
+
+```
+sudo docker-compose exec backend python manage.py collectstatic
+sudo docker-compose exec backend python manage.py load_data
+
 ```
