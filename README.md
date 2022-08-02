@@ -8,9 +8,9 @@
 
 ### Автор
 
-Backend - [Софья Серпинская](https://github.com/sofyaserpinskaya)
+[Софья Серпинская](https://github.com/sofyaserpinskaya) - backend/foodgram, infra, workflows
 
-Frontend - [Яндекс.Практикум](https://github.com/yandex-praktikum)
+[Яндекс.Практикум](https://github.com/yandex-praktikum) - frontend
 
 ### Технологии
 
