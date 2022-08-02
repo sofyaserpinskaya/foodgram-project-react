@@ -1,10 +1,10 @@
 from django.http import HttpResponse
 
 from django_filters.rest_framework import DjangoFilterBackend
-from reportlab.lib.pagesizes import A4
-from reportlab.pdfbase import pdfmetrics
-from reportlab.pdfbase.ttfonts import TTFont
-from reportlab.pdfgen import canvas
+# from reportlab.lib.pagesizes import A4
+# from reportlab.pdfbase import pdfmetrics
+# from reportlab.pdfbase.ttfonts import TTFont
+# from reportlab.pdfgen import canvas
 from rest_framework import mixins, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import MethodNotAllowed
@@ -90,43 +90,45 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 }
             else:
                 shopping_dict[ingredient]['amount'] += obj.amount
-        # download_cart = SHOPPING_CART.format(username=request.user.username)
-        # for ingredient in shopping_dict:
-        #     download_cart += (
-        #         f'{ingredient} '
-        #         f'({shopping_dict[ingredient]["measurement_unit"]}) '
-        #         f'- {shopping_dict[ingredient]["amount"]}\n'
-        #     )
-        # download_cart += FOODGRAM
-        response = HttpResponse(content_type='application/pdf')
-        response['Content-Disposition'] = (
-            'attachment; filename="shopping_cart.pdf"'
-        )
-        p = canvas.Canvas(response, pagesize=A4)
-        pdfmetrics.registerFont(
-            TTFont('Montserrat', './fonts/Montserrat-VariableFont_wght.ttf')
-        )
-        p.setFont('Montserrat', 32)
-        p.drawString(10, 150, text=SHOPPING_CART.format(
-            username=request.user.username
-        ))
+        download_cart = SHOPPING_CART.format(username=request.user.username)
         for ingredient in shopping_dict:
-            p.drawString(10, 100, text=(
+            download_cart += (
                 f'{ingredient} '
                 f'({shopping_dict[ingredient]["measurement_unit"]}) '
-                f'- {shopping_dict[ingredient]["amount"]}'
-            ))
-        p.drawString(10, 10, text=FOODGRAM)
-        p.showPage()
-        p.save()
+                f'- {shopping_dict[ingredient]["amount"]}\n'
+            )
+        download_cart += FOODGRAM
+        response = HttpResponse(
+            download_cart,
+            content_type='text/plain;charset=UTF-8',
+        )
+        response['Content-Disposition'] = (
+            'attachment;'
+            'filename="shopping_cart.txt"'
+        )
         return response
 
-        # response = HttpResponse(
-        #     download_cart,
-        #     content_type='text/plain;charset=UTF-8',
-        # )
+        # try pdf reportlab
+
+        # response = HttpResponse(content_type='application/pdf')
         # response['Content-Disposition'] = (
-        #     'attachment;'
-        #     'filename="shopping_cart.txt"'
+        #     'attachment; filename="shopping_cart.pdf"'
         # )
+        # p = canvas.Canvas(response, pagesize=A4)
+        # pdfmetrics.registerFont(
+        #     TTFont('Montserrat', './fonts/Montserrat-VariableFont_wght.ttf')
+        # )
+        # p.setFont('Montserrat', 32)
+        # p.drawString(10, 150, text=SHOPPING_CART.format(
+        #     username=request.user.username
+        # ))
+        # for ingredient in shopping_dict:
+        #     p.drawString(10, 100, text=(
+        #         f'{ingredient} '
+        #         f'({shopping_dict[ingredient]["measurement_unit"]}) '
+        #         f'- {shopping_dict[ingredient]["amount"]}'
+        #     ))
+        # p.drawString(10, 10, text=FOODGRAM)
+        # p.showPage()
+        # p.save()
         # return response
